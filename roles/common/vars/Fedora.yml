@@ -1,0 +1,9 @@
+common_packages:
+    - automake
+    - gcc
+    - gcc-c++
+    - kernel-devel
+    - cmake
+    - python-devel
+    - python3-devel
+    - lastpass-cli

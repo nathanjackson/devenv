@@ -1,0 +1,9 @@
+# Setup Git
+---
+- include: load_distro_vars.yml
+
+- name: install git
+  package:
+    name: '{{ git_package }}'
+    state: present
+  become: true

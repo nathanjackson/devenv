@@ -1,0 +1,39 @@
+# Setup Vim
+---
+- include: load_distro_vars.yml
+
+- name: install vim
+  package:
+    name: '{{ vim_package }}'
+    state: present
+  become: true
+
+- name: install vundle
+  git:
+    repo: https://github.com/VundleVim/Vundle.vim.git
+    dest: '{{ ansible_env.HOME }}/.vim/bundle/Vundle.vim'
+
+- name: install vimrc
+  copy:
+    src: vimrc
+    dest: '{{ ansible_env.HOME }}/.vimrc'
+
+- name: install vim plugins
+  command: vim +PluginInstall +qall
+
+- name: setup YouCompleteMe
+  command: ./install.py --clang-completer
+  args:
+    chdir: '{{ ansible_env.HOME }}/.vim/bundle/YouCompleteMe'
+
+- name: ruby development packages for command-t
+  package:
+    name: '{{ ruby_dev_package }}'
+    state: present
+  become: true
+
+- name: build command-t component
+  command: "{{ item }} chdir={{ ansible_env.HOME }}/.vim/bundle/command-t/ruby/command-t/ext/command-t"
+  with_items:
+    - ruby extconf.rb
+    - make

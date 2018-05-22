@@ -1,0 +1,27 @@
+# Common Setup
+---
+- include: load_distro_vars.yml
+
+- name: install common packages
+  package:
+    name: '{{ item }}'
+    state: present
+  become: true
+  with_items: "{{ common_packages }}"
+
+- name: create bin home directory
+  file:
+    path: "{{ ansible_env.HOME }}/bin"
+    state: directory
+
+- name: add user's home bin to their PATH
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.bash_profile"
+    line: "export PATH=$HOME/bin:$PATH"
+    state: present
+
+- name: install lastpass scripts
+  template:
+    src: lpass-load-key.j2
+    dest: "{{ ansible_env.HOME }}/bin/lpass-load-key"
+    mode: 0755

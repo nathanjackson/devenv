@@ -1,0 +1,32 @@
+set nocompatible
+filetype off
+
+" Setup Vundle and Plugins
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" Required for Vundle
+Plugin 'VundleVim/Vundle.vim'
+
+" Supertab
+Plugin 'ervandew/supertab'
+
+" YouCompleteMe
+Plugin 'Valloric/YouCompleteMe'
+
+" Command-T
+Plugin 'wincent/command-t'
+
+call vundle#end()
+filetype plugin indent on
+
+" Quick Escape - Press xx instead of escape to leave insert mode.
+imap xx <esc>
+
+" Default tab size and expansion.
+set tabstop=4 shiftwidth=4 expandtab
+
+" Return to last position in files.
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+endif

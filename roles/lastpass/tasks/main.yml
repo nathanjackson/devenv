@@ -1,0 +1,4 @@
+---
+- name: temporary directory to build lastpass-cli
+  tempfile:
+    state: directory

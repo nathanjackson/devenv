@@ -1,0 +1,14 @@
+---
+- hosts: all
+  pre_tasks:
+    - name: install python selinux bindings (for Fedora)
+      package:
+        name: python2-libselinux
+        state: present
+      become: true
+      when:
+        - ansible_distribution == 'Fedora'
+  roles:
+    - common
+    - git
+    - vim

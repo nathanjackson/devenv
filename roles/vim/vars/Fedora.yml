@@ -1,0 +1,4 @@
+# Fedora Vars for Vim
+---
+vim_package: vim
+ruby_dev_package: ruby-devel

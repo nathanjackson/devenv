@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# The LastPass account to use.
+LASTPASS_ACCOUNT={{ lastpass_account }}
+
+# setup temporary files
+key_tmp="/run/user/$UID/id_tmp"
+helper="/run/user/$UID/aphelper.sh"
+trap "rm -f $key_tmp $helper" EXIT
+
+# Login to LastPass.
+lpass login $LASTPASS_ACCOUNT
+
+# Request SSH key and passphrase from LastPass.
+lpass_entry="ssh/$1"
+key_passphrase=$(lpass show --field='Passphrase' $lpass_entry)
+key_private_key=$(lpass show --field='Private Key' $lpass_entry | tr '^' '\n')
+
+# Write private key to temporary file.
+echo "$key_private_key" > $key_tmp
+chmod 0600 $key_tmp
+
+# Write helper script to temporary file.
+cat > $helper <<EOF
+#!/bin/sh
+exec cat
+EOF
+chmod 700 $helper
+
+# Load the key.
+echo $key_passphrase | SSH_ASKPASS=$helper DISPLAY= ssh-add "$key_tmp"
+
+# Logout from LastPass.
+lpass logout -f
