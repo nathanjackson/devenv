@@ -17,6 +17,9 @@ Plugin 'Valloric/YouCompleteMe'
 " Command-T
 Plugin 'wincent/command-t'
 
+" Abolish
+Plugin 'tpope/vim-abolish'
+
 call vundle#end()
 filetype plugin indent on
 
